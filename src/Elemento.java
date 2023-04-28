@@ -3,6 +3,16 @@ import it.kibo.fp.lib.RandomDraws;
 public class Elemento {
     private static final int ELEMENTO = 5;
     private int potenza;
+    
+    public Elemento(){
+    	
+    }
+    
+    /**
+     * Elenco elementi presenti nel gioco
+     * Non è detto che vengano tutti utilizzati nel gioco
+     *
+     */
     public enum Elementi{TERRA("Terra",1),ACQUA("Acqua", 2),FUOCO("Fuoco",3),ARIA("Aria", 4),LUCE("Luce",5);
         private final int indice;
         private String nome;
@@ -20,7 +30,7 @@ public class Elemento {
 
     //inserire nella matrice matrix[i][i] = 0;
 
-    public void creaEquilibrio(int matrix[][]){
+    public void creaEquilibrio(){
         for(int i = 0;i<ELEMENTO;i++){
             int ris = 0;
             for(int j=0;j<ELEMENTO;j++){
@@ -38,10 +48,7 @@ public class Elemento {
         }
 
     }
-
-    public int generaPotenza(){
-       return potenza = RandomDraws.drawInteger(1,10);
-    }
+    
     public int generaRiga(int matrix[]){
         int i;
         for(i=1;i<ELEMENTO-1;i++){
@@ -57,20 +64,60 @@ public class Elemento {
 
         return matrix[i];
     }
-    public int ultimoNumero(int matrix[][]){
-        int i;
-        int ris=0;
-        for(i=0;i<ELEMENTO-1;i++){
-            ris = matrix[i][0];
-        }
-        return ris;
+    
+    /**
+     * Crea l'equilibrio dell'Universo
+     * L'equilibrio ottenuto viene utilizzato per
+     * i confronti tra Elementi durante tutta la pratita
+     */
+    public static void creaEquilibrio2() {
+    	/*
+    	 * Genera una matrice adiacenza che rappresenta il grafo delle potenze
+    	 * I valori delle potenze sono rappresentati dai valori positivi, i valori
+    	 * negativi indicano la potenza inversa
+    	 * Es Acqua ---- > Fuoco	5
+    	 *    Fuoco -----> Acqua    -5
+    	 *    
+    	 * Per ottenere un grafo corretto, la matrice di adiacenza ha:
+    	 * 	sulla diagonale tutti zeri
+    	 *  è simmetrica
+    	 *  negli elementi dell'ultima colonna/riga la somma degli elementi precedenti nella riga/colonna
+    	 *  nelle altre caselle, dei valori casuali	
+    	 */
+    	
+    	//zeri sulla diagonale
+    	for(int i=0; i<ELEMENTO; i++)
+    		for(int j=0; j<ELEMENTO; j++)
+    			if(i==j)
+    				matrix[i][j]=0;
+    	
+    	for(int i=0; i<ELEMENTO; i++) {
+    		int somma=0; //somma da usare per l'ultimo elemento della riga
+    		for(int j=i+1; j<ELEMENTO; j++)
+    			if(j==ELEMENTO-1) {
+    				matrix[i][j]=-somma;
+    				matrix[j][i]=somma; //elemento simmetrico
+    			}else {
+    				int valore=RandomDraws.drawInteger(1,10);
+    				if(RandomDraws.estraiBoolean())
+    					valore= - valore;
+    				
+    				somma+=valore;
+    				
+    				matrix[i][j]=valore;
+    				matrix[j][i]=-valore; //elemento simmetrico
+    			}
+    	}
     }
 
-    public Elemento(){
-
-    }
-
-    public String toString(){
+    /*
+     * Ritorna una stringa che rappresenta l'equilibrio
+     */
+    /*
+     * Nota: toString non si poteva utilizzare perchè
+     * definita come funzione non static
+     */
+    public static String getStringEquilibrio(){
         StringBuffer tabella= new StringBuffer();
         for(int i=0; i<ELEMENTO; i++){
             for(int j=0; j<ELEMENTO; j++)
