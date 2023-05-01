@@ -4,7 +4,7 @@ import it.kibo.fp.lib.RandomDraws;
 public enum Elementi{
     	
 	//lista degli elementi
-	TERRA("Terra",1),ACQUA("Acqua", 2),FUOCO("Fuoco",3),ARIA("Aria", 4),LUCE("Luce",5);
+	TERRA("Terra",0),ACQUA("Acqua", 1),FUOCO("Fuoco",2),ARIA("Aria", 3),LUCE("Luce",4);
 
 	private static final int N_ELEMENTI = 5; //numero di elementi da usare durante il gioco
 
