@@ -6,14 +6,32 @@ public enum Elementi{
 	//lista degli elementi
 	TERRA("Terra",0),ACQUA("Acqua", 1),FUOCO("Fuoco",2),ARIA("Aria", 3),LUCE("Luce",4);
 
-	private static final int N_ELEMENTI = 5; //numero di elementi da usare durante il gioco
+	public static final int N_ELEMENTI = 5; //numero di elementi da usare durante il gioco
 
 	private final int indice;
+	public int i;
 	private String nome;
 
 	Elementi(String nome, int indice){
 		this.nome = nome;
 		this.indice = indice;
+	}
+	public static Elementi getElemento(int i){
+		switch (i){
+			case 0:{ return TERRA;
+			}
+			case 1:{ return ACQUA;
+			}
+			case 2:{ return FUOCO;
+			}
+			case 3:{ return ARIA;
+			}
+			case 4:{ return LUCE;
+			}
+			default:{ return null;
+			}
+		}
+
 	}
 
 	public int getIndice(){
@@ -42,41 +60,6 @@ public enum Elementi{
 	private static int matrix[][] = new int[N_ELEMENTI][N_ELEMENTI];
 
 	//inserire nella matrice matrix[i][i] = 0;
-
-	public void creaEquilibrio(){
-		for(int i = 0;i<N_ELEMENTI;i++){
-			int ris = 0;
-			for(int j=0;j<N_ELEMENTI;j++){
-				if(i==j){
-					matrix[i][j] = 0;
-				}else if(j!=N_ELEMENTI-1){
-					int valore = RandomDraws.drawInteger(1,10);
-					if(RandomDraws.estraiBoolean()) valore=-valore;
-					matrix[i][0] = valore;
-					ris = ris + matrix[i][0];
-				}else{
-					matrix[i][j] = ris;
-				}
-			}
-		}
-
-	}
-
-	public int generaRiga(int matrix[]){
-		int i;
-		for(i=1;i<N_ELEMENTI-1;i++){
-			int valore = RandomDraws.drawInteger(1,10);
-			if(RandomDraws.estraiBoolean()) valore=-valore;
-			matrix[i] = valore;
-		}
-		int ris=0;
-		for(i=0;i<N_ELEMENTI-1;i++){
-			ris = matrix[i];
-		}
-		matrix[N_ELEMENTI] = matrix[ris];
-
-		return matrix[i];
-	}
 
 	/**
 	 * Crea l'equilibrio dell'Universo
@@ -111,7 +94,7 @@ public enum Elementi{
 					matrix[i][j]=-somma;
 					matrix[j][i]=somma; //elemento simmetrico
 				}else {
-					int valore=RandomDraws.drawInteger(1,10);
+					int valore=RandomDraws.drawInteger(1,Tamagolem.VITA-1);
 					if(RandomDraws.estraiBoolean())
 						valore= - valore;
 

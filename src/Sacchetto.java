@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.ArrayDeque;
 
 public class Sacchetto {
-	private static int dimensione;
+	public static final int DIM_SACCHETTO = 3 ;
 	
-	private ArrayDeque<Pietra> pietre= new ArrayDeque<Pietra>();
+	private ArrayDeque<Pietra> pietre= new ArrayDeque<>();
 	
 	public Sacchetto(ArrayList<Pietra> pietre) {
 		for(Pietra p : pietre)
