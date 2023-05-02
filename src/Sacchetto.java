@@ -7,8 +7,11 @@ public class Sacchetto {
 	private ArrayDeque<Pietra> pietre= new ArrayDeque<>();
 	
 	public Sacchetto(ArrayList<Pietra> pietre) {
-		for(Pietra p : pietre)
-			this.pietre.add(p); //aggiunge p alla fine della coda
+			if(pietre.size()<=DIM_SACCHETTO){
+				for (Pietra p : pietre) {
+					this.pietre.add(p);
+				}//aggiunge p alla fine della coda
+			}
 	}
 	
 	/**

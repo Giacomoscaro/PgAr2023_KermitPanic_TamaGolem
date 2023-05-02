@@ -66,7 +66,7 @@ public enum Elementi{
 	 * L'equilibrio ottenuto viene utilizzato per
 	 * i confronti tra Elementi durante tutta la pratita
 	 */
-	public static void creaEquilibrio2() {
+	public static void creaEquilibrio() {
 		/*
 		 * Genera una matrice adiacenza che rappresenta il grafo delle potenze
 		 * I valori delle potenze sono rappresentati dai valori positivi, i valori
@@ -89,11 +89,16 @@ public enum Elementi{
 
 		for(int i=0; i<N_ELEMENTI; i++) {
 			int somma=0; //somma da usare per l'ultimo elemento della riga
-			for(int j=i+1; j<N_ELEMENTI; j++)
+			for(int j=0; j<N_ELEMENTI; j++)
+
 				if(j==N_ELEMENTI-1) {
+					if(Math.abs(somma)>=Tamagolem.VITA){
+						i=-1;
+						break;
+					}
 					matrix[i][j]=-somma;
 					matrix[j][i]=somma; //elemento simmetrico
-				}else {
+				}else if(j>i) {
 					int valore=RandomDraws.drawInteger(1,Tamagolem.VITA-1);
 					if(RandomDraws.estraiBoolean())
 						valore= - valore;
@@ -102,7 +107,7 @@ public enum Elementi{
 
 					matrix[i][j]=valore;
 					matrix[j][i]=-valore; //elemento simmetrico
-				}
+				}else somma+=matrix[i][j];
 		}
 	}
 
