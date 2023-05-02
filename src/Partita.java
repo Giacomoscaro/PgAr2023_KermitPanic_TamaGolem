@@ -43,7 +43,7 @@ public class Partita {
             System.out.println("Il giocatore " + g1.getColore() + g1.getNome().toUpperCase()  + AnsiColors.RESET + " ha vinto!");
         }
         else {
-            System.out.println("Il giocatore " +g2.getColore() +  g2.getNome() + AnsiColors.RESET + " ha vinto");
+            System.out.println("Il giocatore " +g2.getColore() +  g2.getNome().toUpperCase() + AnsiColors.RESET + " ha vinto");
         }
     }
     public void creaScorta(){
@@ -64,7 +64,7 @@ public class Partita {
         System.out.println("Selezione" + Sacchetto.DIM_SACCHETTO + "Pietre dalla scorta per creare il set");
         for(int i = 0; i<Sacchetto.DIM_SACCHETTO;i++){
             stampaScorta();
-            int n = InputData.readInteger(giocatore.getNome() + " che pietra vuoi: ");
+            int n = InputData.readInteger( giocatore.getColore() + giocatore.getNome().toUpperCase()  + AnsiColors.RESET + " che pietra vuoi: ");
             while(n<1 || n> scorta.size()){
                 n=InputData.readInteger("Inserisci una pietra della scorta");
             }
@@ -103,15 +103,15 @@ public class Partita {
             creaSet(giocatore);
         }
         else {
-            System.out.println("Il giocatore " +giocatore.getColore() +  giocatore.getNome() + AnsiColors.RESET + " ha finito i Tamagolem");
+            System.out.println("Il giocatore " +giocatore.getColore() +  giocatore.getNome().toUpperCase() + AnsiColors.RESET + " ha finito i Tamagolem");
         }
     }
 
     public void esito(Giocatore giocatore, int danno){
-        System.out.println("Il golem di " + giocatore.getNome() + " ha preso " + danno + " di danno");
+        System.out.println("Il golem di " +  giocatore.getColore() + giocatore.getNome().toUpperCase()  + AnsiColors.RESET + " ha preso " + danno + " di danno");
 
         if(giocatore.getTeam().get(0).isDead()){
-            System.out.println("Il Tamagolem di " + giocatore.getNome() + " è morto!");
+            System.out.println("Il Tamagolem di " +  giocatore.getColore() + giocatore.getNome().toUpperCase()  + AnsiColors.RESET + " è morto!");
         }
 
     }
