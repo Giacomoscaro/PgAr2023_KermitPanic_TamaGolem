@@ -1,17 +1,18 @@
 import it.kibo.fp.lib.InputData;
+import it.kibo.fp.lib.AnsiColors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Partita {
 
-    private Giocatore g1 = new Giocatore();
-    private Giocatore g2 = new Giocatore();
+    private Giocatore g1;
+    private Giocatore g2;
     //private HashMap<Elementi, Integer> scorta = new HashMap<>(){}; //S = ⎡(2 * G * P) / N⎤ * N
     private ArrayList<Pietra> scorta = new ArrayList<>();
     public Partita(){
-        this.g1 = new Giocatore();
-        this.g2 = new Giocatore();
+        this.g1 = new Giocatore(AnsiColors.RED);
+        this.g2 = new Giocatore(AnsiColors.BLUE);
 
         Elementi.creaEquilibrio();
         this.numeroTama();
@@ -39,10 +40,10 @@ public class Partita {
 
         }while(g1.getTeam().size()>0 && g2.getTeam().size()>0);
         if(g1.getTeam().size()>0){
-            System.out.println("Il giocatore " + g1.getNome() + " ha vinto!");
+            System.out.println("Il giocatore " + g1.getColore() + g1.getNome().toUpperCase()  + AnsiColors.RESET + " ha vinto!");
         }
         else {
-            System.out.println("Il giocatore " + g2.getNome() + " ha vinto");
+            System.out.println("Il giocatore " +g2.getColore() +  g2.getNome() + AnsiColors.RESET + " ha vinto");
         }
     }
     public void creaScorta(){
@@ -102,7 +103,7 @@ public class Partita {
             creaSet(giocatore);
         }
         else {
-            System.out.println("Il giocatore " + giocatore.getNome() + " ha finito i Tamagolem");
+            System.out.println("Il giocatore " +giocatore.getColore() +  giocatore.getNome() + AnsiColors.RESET + " ha finito i Tamagolem");
         }
     }
 
