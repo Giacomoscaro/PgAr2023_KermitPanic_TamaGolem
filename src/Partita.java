@@ -61,12 +61,12 @@ public class Partita {
     }
     public void creaSet(Giocatore giocatore){
         ArrayList<Pietra> pietre = new ArrayList<>();
-        System.out.println("Selezione" + Sacchetto.DIM_SACCHETTO + "Pietre dalla scorta per creare il set");
+        System.out.println(giocatore.getColore()+ giocatore.getNome().toUpperCase() + AnsiColors.RESET + ", seleziona " + Sacchetto.DIM_SACCHETTO + " pietre dalla scorta per creare il set");
         for(int i = 0; i<Sacchetto.DIM_SACCHETTO;i++){
             stampaScorta();
             int n = InputData.readInteger( giocatore.getColore() + giocatore.getNome().toUpperCase()  + AnsiColors.RESET + " che pietra vuoi: ");
             while(n<1 || n> scorta.size()){
-                n=InputData.readInteger("Inserisci una pietra della scorta");
+                n=InputData.readInteger("Inserisci una pietra della scorta: ");
             }
             pietre.add(scorta.get(n-1));
             scorta.remove(n-1);
@@ -103,7 +103,7 @@ public class Partita {
             creaSet(giocatore);
         }
         else {
-            System.out.println("Il giocatore " +giocatore.getColore() +  giocatore.getNome().toUpperCase() + AnsiColors.RESET + " ha finito i Tamagolem");
+            System.out.println("Il giocatore " + giocatore.getColore() +  giocatore.getNome().toUpperCase() + AnsiColors.RESET + " ha finito i Tamagolem");
         }
     }
 
@@ -111,7 +111,7 @@ public class Partita {
         System.out.println("Il golem di " +  giocatore.getColore() + giocatore.getNome().toUpperCase()  + AnsiColors.RESET + " ha preso " + danno + " di danno");
 
         if(giocatore.getTeam().get(0).isDead()){
-            System.out.println("Il Tamagolem di " +  giocatore.getColore() + giocatore.getNome().toUpperCase()  + AnsiColors.RESET + " è morto!");
+            System.out.println(AnsiColors.RED + "Il Tamagolem di " + giocatore.getColore() + giocatore.getNome().toUpperCase()  + AnsiColors.RED + " è morto!" + AnsiColors.RESET);
         }
 
     }

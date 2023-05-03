@@ -24,4 +24,12 @@ public class Giocatore {
     public AnsiColors getColore() {
         return colore;
     }
+    
+    /* valutare se fare una funzione toString come per Elementi
+     * per semplificare il codice in Partita
+     * 
+     * public String toString(){
+     * 	return colore + nome + AnsiColors.RESET;
+     * }
+     */
 }
