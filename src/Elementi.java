@@ -1,20 +1,22 @@
 import it.kibo.fp.lib.RandomDraws;
+import it.kibo.fp.lib.AnsiColors;
 
     
 public enum Elementi{
     	
 	//lista degli elementi
-	TERRA("Terra",0),ACQUA("Acqua", 1),FUOCO("Fuoco",2),ARIA("Aria", 3),LUCE("Luce",4);
+	TERRA("Terra",0, AnsiColors.GREEN),ACQUA("Acqua", 1, AnsiColors.BLUE),FUOCO("Fuoco",2, AnsiColors.RED),ARIA("Aria", 3, AnsiColors.CYAN),LUCE("Luce",4,AnsiColors.YELLOW);
 
 	public static final int N_ELEMENTI = 5; //numero di elementi da usare durante il gioco
 
 	private final int indice;
-	public int i;
 	private String nome;
+	private AnsiColors colore;
 
-	Elementi(String nome, int indice){
+	Elementi(String nome, int indice, AnsiColors colore){
 		this.nome = nome;
 		this.indice = indice;
+		this.colore = colore;
 	}
 	public static Elementi getElemento(int i){
 		switch (i){
@@ -39,7 +41,7 @@ public enum Elementi{
 	}
 
 	public String toString() {
-		return this.nome;
+		return colore + this.nome + AnsiColors.RESET;
 	}
 	
 	/**
