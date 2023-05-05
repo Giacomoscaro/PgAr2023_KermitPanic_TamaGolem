@@ -76,7 +76,18 @@ public enum AnsiColors {
   /**
    * The ansi code for clearing the terminal.
    */
+  BLACK_BRIGHT  ("\033[0;90m"),  // BLACK
+  RED_BRIGHT  ("\033[0;91m"),    // RED
+  GREEN_BRIGHT  ("\033[0;92m"),  // GREEN
+  YELLOW_BRIGHT  ("\033[0;93m"), // YELLOW
+  BLUE_BRIGHT  ("\033[0;94m"),   // BLUE
+  PURPLE_BRIGHT ("\033[0;95m"), // PURPLE
+  CYAN_BRIGHT ("\033[0;96m"),   // CYAN
+  WHITE_BRIGHT ("\033[0;97m"),
+  RED_BOLD_BRIGHT ( "\033[1;91m"),
+  BLUE_BOLD_BRIGHT ("\033[1;94m"),
   CLEAR("\033[H\033[2J");
+
 
   private String ansiCode;
 

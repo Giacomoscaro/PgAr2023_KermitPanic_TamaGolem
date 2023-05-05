@@ -5,7 +5,7 @@ import it.kibo.fp.lib.AnsiColors;
 public enum Elementi{
     	
 	//lista degli elementi
-	TERRA("Terra",0, AnsiColors.GREEN),ACQUA("Acqua", 1, AnsiColors.BLUE),FUOCO("Fuoco",2, AnsiColors.RED),ARIA("Aria", 3, AnsiColors.CYAN),LUCE("Luce",4,AnsiColors.YELLOW);
+	TERRA("Terra",0, AnsiColors.GREEN_BRIGHT),ACQUA("Acqua", 1, AnsiColors.BLUE_BRIGHT),FUOCO("Fuoco",2, AnsiColors.RED_BRIGHT),ARIA("Aria", 3, AnsiColors.CYAN_BRIGHT),LUCE("Luce",4,AnsiColors.YELLOW_BRIGHT);
 
 	public static final int N_ELEMENTI = 5; //numero di elementi da usare durante il gioco
 

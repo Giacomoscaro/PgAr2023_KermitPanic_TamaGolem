@@ -24,6 +24,9 @@ public class Giocatore {
     public AnsiColors getColore() {
         return colore;
     }
+    public String toString(){
+        return colore +  this.nome.toUpperCase() + AnsiColors.RESET;
+    }
     
     /* valutare se fare una funzione toString come per Elementi
      * per semplificare il codice in Partita

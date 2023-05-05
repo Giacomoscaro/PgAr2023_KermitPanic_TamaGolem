@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
 
         Partita p3 = new Partita();
-        System.out.println(Elementi.getStringEquilibrio());
+        //System.out.println(Elementi.getStringEquilibrio());
         p3.creaPartita();
 
     }
