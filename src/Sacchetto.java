@@ -39,4 +39,8 @@ public class Sacchetto {
 		output.append("\n");
 		return output.toString();
 	}
+
+	public ArrayDeque<Pietra> getPietre() {
+		return pietre;
+	}
 }

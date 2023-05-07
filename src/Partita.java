@@ -72,7 +72,7 @@ public class Partita {
     public void creaSet(Giocatore giocatore) {
         ArrayList<Pietra> pietre = new ArrayList<>();
         //Thread.sleep(MILLIS);
-        System.out.println(AnsiColors.GREEN + "Selezione " + Sacchetto.DIM_SACCHETTO + " Pietre dalla scorta per creare il set" + AnsiColors.RESET);
+        System.out.println(AnsiColors.GREEN + "Selezione " + (int)Sacchetto.DIM_SACCHETTO + " Pietre dalla scorta per creare il set" + AnsiColors.RESET);
         for(int i = 0; i<Sacchetto.DIM_SACCHETTO;i++){
             stampaScorta();
             int n = InputData.readInteger( giocatore.toString() + " che pietra vuoi: ");
@@ -102,13 +102,13 @@ public class Partita {
                 t1.danno(Math.abs(potenza));
                 tempo();
                 //Thread.sleep(MILLIS);
-                esito(g1,Math.abs(potenza));
+                esito(g1, g2, Math.abs(potenza));
             }
             else if(potenza>0){
                     t2.danno(Math.abs(potenza));
                     tempo();
                     //Thread.sleep(MILLIS);
-                    esito(g2,Math.abs(potenza));
+                    esito(g2, g1, Math.abs(potenza));
             }
             else {
                 tempo();
@@ -141,13 +141,13 @@ public class Partita {
         }
     }
 
-    public void esito(Giocatore giocatore, int danno){
+    public void esito(Giocatore g1, Giocatore g2, int danno){
         tempo();
-        System.out.println("Il golem di " + giocatore.toString() +  " ha preso " + danno + " di danno");
+        System.out.println("Il golem di tipo " + g1.getTeam().get(0).getSacchetto().getPietre().getFirst().getElemento().toString() + " di " + g1.toString() +  " ha preso " + danno + " di danno da " + g2.getTeam().get(0).getSacchetto().getPietre().getFirst().getElemento().toString());
 
-        if(giocatore.getTeam().get(0).isDead()){
+        if(g1.getTeam().get(0).isDead()){
             tempo();
-            System.out.println("Il Tamagolem di " +  giocatore.toString() + " è morto!");
+            System.out.println("Il Tamagolem di " +  g1.toString() + " è morto!");
         }
 
     }
