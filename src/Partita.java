@@ -8,6 +8,8 @@ import java.util.HashMap;
 public class Partita {
 
 
+    public static final int MILLIS = 1000;
+    public static final int MILLIS2 = 50;
     private Giocatore g1;
     private Giocatore g2;
     //private HashMap<Elementi, Integer> scorta = new HashMap<>(){}; //S = ⎡(2 * G * P) / N⎤ * N
@@ -21,10 +23,10 @@ public class Partita {
         this.creaScorta();
     }
     public void creaPartita(){
-        System.out.println("Inizia la partita");
+        System.out.println(AnsiColors.PURPLE_BRIGHT + "Inizia la partita".toUpperCase() + AnsiColors.RESET);
 
-        g1.setNome(InputData.readNonEmptyString("Inserisci il nome del giocatore 1: ", true));
-        g2.setNome(InputData.readNonEmptyString("Inserisci il nome del giocatore 2: ", true));
+        g1.setNome(InputData.readNonEmptyString(AnsiColors.PURPLE_BRIGHT + "Inserisci il nome del giocatore 1: " + AnsiColors.RESET, true));
+        g2.setNome(InputData.readNonEmptyString(AnsiColors.PURPLE_BRIGHT + "Inserisci il nome del giocatore 2: " + AnsiColors.RESET, true));
 
         creaSet(g1);
         creaSet(g2);
@@ -54,7 +56,7 @@ public class Partita {
         System.out.println(Elementi.getStringEquilibrio());
     }
     public void creaScorta(){
-        int s = (((2*g1.getTeam().size()*Sacchetto.DIM_SACCHETTO)/Elementi.N_ELEMENTI)+1)*Elementi.N_ELEMENTI;
+        double s = (Math.ceil(((2*g1.getTeam().size()*Sacchetto.DIM_SACCHETTO)/Elementi.N_ELEMENTI)))*Elementi.N_ELEMENTI;
         for(int i=0;i<Elementi.N_ELEMENTI;i++){
             for(int j=0;j<(s/Elementi.N_ELEMENTI);j++){
                 scorta.add(new Pietra(Elementi.getElemento(i)));
@@ -63,11 +65,13 @@ public class Partita {
     }
     public void stampaScorta(){
         for(Pietra p : scorta){
+            //Thread.sleep(MILLIS2);
             System.out.println(scorta.indexOf(p)+1  + "\t" + p.getElemento().toString());
         }
     }
-    public void creaSet(Giocatore giocatore){
+    public void creaSet(Giocatore giocatore) {
         ArrayList<Pietra> pietre = new ArrayList<>();
+        //Thread.sleep(MILLIS);
         System.out.println(AnsiColors.GREEN + "Selezione " + Sacchetto.DIM_SACCHETTO + " Pietre dalla scorta per creare il set" + AnsiColors.RESET);
         for(int i = 0; i<Sacchetto.DIM_SACCHETTO;i++){
             stampaScorta();
@@ -81,7 +85,8 @@ public class Partita {
         giocatore.getTeam().get(0).setSacchetto(new Sacchetto(pietre));
     }
     public void numeroTama(){
-        int num_golem_giocatore = InputData.readIntegerBetween(AnsiColors.PURPLE + "Inserire numero di tamagolem per giocatore: " + AnsiColors.RESET, 1, 20);
+        double num_golem_giocatore = Math.ceil((Elementi.n_elementi-1)*(Elementi.n_elementi-2)/(2*Sacchetto.DIM_SACCHETTO));
+        //int num_golem_giocatore = InputData.readIntegerBetween(AnsiColors.PURPLE + "Inserire numero di tamagolem per giocatore: " + AnsiColors.RESET, 1, 20);
         for(int i=0;i<num_golem_giocatore;i++) {
             g1.getTeam().add(new Tamagolem());
             g2.getTeam().add(new Tamagolem());
@@ -95,13 +100,19 @@ public class Partita {
             int potenza = Elementi.interazione(t1.getSacchetto().usaPietra().getElemento(), t2.getSacchetto().usaPietra().getElemento());
             if(potenza<0){
                 t1.danno(Math.abs(potenza));
+                tempo();
+                //Thread.sleep(MILLIS);
                 esito(g1,Math.abs(potenza));
             }
             else if(potenza>0){
                     t2.danno(Math.abs(potenza));
+                    tempo();
+                    //Thread.sleep(MILLIS);
                     esito(g2,Math.abs(potenza));
             }
             else {
+                tempo();
+                //Thread.sleep(MILLIS);
                 System.out.println("Nessun golem ha preso danno!");
                 draw ++;
                 if(draw==10){
@@ -131,11 +142,20 @@ public class Partita {
     }
 
     public void esito(Giocatore giocatore, int danno){
+        tempo();
         System.out.println("Il golem di " + giocatore.toString() +  " ha preso " + danno + " di danno");
 
         if(giocatore.getTeam().get(0).isDead()){
+            tempo();
             System.out.println("Il Tamagolem di " +  giocatore.toString() + " è morto!");
         }
 
+    }
+    public void tempo(){
+        try {
+            Thread.sleep(1000);  // 1000 milliseconds = 1 second
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

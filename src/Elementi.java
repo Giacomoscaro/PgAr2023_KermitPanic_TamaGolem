@@ -1,3 +1,4 @@
+import it.kibo.fp.lib.InputData;
 import it.kibo.fp.lib.RandomDraws;
 import it.kibo.fp.lib.AnsiColors;
 
@@ -5,10 +6,11 @@ import it.kibo.fp.lib.AnsiColors;
 public enum Elementi{
     	
 	//lista degli elementi
-	TERRA("Terra",0, AnsiColors.GREEN_BRIGHT),ACQUA("Acqua", 1, AnsiColors.BLUE_BRIGHT),FUOCO("Fuoco",2, AnsiColors.RED_BRIGHT),ARIA("Aria", 3, AnsiColors.CYAN_BRIGHT),LUCE("Luce",4,AnsiColors.YELLOW_BRIGHT);
+	TERRA("Terra",0, AnsiColors.GREEN_BRIGHT),ACQUA("Acqua", 1, AnsiColors.BLUE_BRIGHT),FUOCO("Fuoco",2, AnsiColors.RED_BRIGHT),ARIA("Aria", 3, AnsiColors.CYAN_BRIGHT),LUCE("Luce",4,AnsiColors.YELLOW_BRIGHT)
+	,ROMANO("Romanaccio",5,AnsiColors.BLACK), HIGHGROUND("Highground",7,AnsiColors.WHITE_BRIGHT),PLASMA("Plasma",8,AnsiColors.PURPLE_BRIGHT),SABBIA("Sabbia",9,AnsiColors.YELLOW),FUMO("FUMO",10,AnsiColors.GREEN);
 
-	public static final int N_ELEMENTI = 5; //numero di elementi da usare durante il gioco
-
+	public static final int N_ELEMENTI = InputData.readIntegerBetween(AnsiColors.PURPLE_BRIGHT + "Inserire un numero da 3 a 10: " + AnsiColors.RESET ,3,10); //numero di elementi da usare durante il gioco
+	public static int n_elementi = N_ELEMENTI;
 	private final int indice;
 	private String nome;
 	private AnsiColors colore;
@@ -29,6 +31,16 @@ public enum Elementi{
 			case 3:{ return ARIA;
 			}
 			case 4:{ return LUCE;
+			}
+			case 5:{ return ROMANO;
+			}
+			case 6:{ return HIGHGROUND;
+			}
+			case 7:{ return PLASMA;
+			}
+			case 8:{ return SABBIA;
+			}
+			case 9:{ return FUMO;
 			}
 			default:{ return null;
 			}

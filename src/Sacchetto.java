@@ -2,8 +2,9 @@ import java.util.ArrayList;
 import java.util.ArrayDeque;
 
 public class Sacchetto {
-	public static final int DIM_SACCHETTO = 3 ;
-	
+
+	private static double div = (Elementi.n_elementi+1);
+	public static final double DIM_SACCHETTO = Math.ceil(div/3)+1;
 	private ArrayDeque<Pietra> pietre= new ArrayDeque<>();
 	
 	public Sacchetto(ArrayList<Pietra> pietre) {
