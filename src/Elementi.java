@@ -9,8 +9,7 @@ public enum Elementi{
 	TERRA("Terra",0, AnsiColors.GREEN_BRIGHT),ACQUA("Acqua", 1, AnsiColors.BLUE_BRIGHT),FUOCO("Fuoco",2, AnsiColors.RED_BRIGHT),ARIA("Aria", 3, AnsiColors.CYAN_BRIGHT),LUCE("Luce",4,AnsiColors.YELLOW_BRIGHT)
 	,ROMANO("Romanaccio",5,AnsiColors.BLACK), HIGHGROUND("Highground",6,AnsiColors.WHITE_BRIGHT),PLASMA("Plasma",7,AnsiColors.PURPLE_BRIGHT),SABBIA("Sabbia",8,AnsiColors.YELLOW),FUMO("FUMO",9,AnsiColors.GREEN);
 
-	public static final int N_ELEMENTI = InputData.readIntegerBetween(AnsiColors.PURPLE_BRIGHT + "Inserire un numero da 3 a 10: " + AnsiColors.RESET ,3,10); //numero di elementi da usare durante il gioco
-	public static int n_elementi = N_ELEMENTI;
+	public static final int N_ELEMENTI = InputData.readIntegerBetween(AnsiColors.PURPLE_BRIGHT + "Inserire il numero di elementi da 3 a 10: " + AnsiColors.RESET, 3, 10);//numero di elementi da usare durante il gioco
 	private final int indice;
 	private String nome;
 	private AnsiColors colore;
@@ -113,7 +112,7 @@ public enum Elementi{
 					matrix[i][j]=-somma;
 					matrix[j][i]=somma; //elemento simmetrico
 				}else if(j>i) {
-					int valore=RandomDraws.drawInteger(1,Tamagolem.VITA-1);
+					int valore=RandomDraws.drawInteger(1,Tamagolem.VITA);
 					if(RandomDraws.estraiBoolean())
 						valore= - valore;
 

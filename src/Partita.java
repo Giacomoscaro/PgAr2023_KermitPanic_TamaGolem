@@ -77,7 +77,7 @@ public class Partita {
             stampaScorta();
             int n = InputData.readInteger( giocatore.toString() + " che pietra vuoi: ");
             while(n<1 || n> scorta.size()){
-                n=InputData.readInteger("Inserisci una pietra della scorta");
+                n=InputData.readInteger("Inserisci una pietra valida della scorta");
             }
             pietre.add(scorta.get(n-1));
             scorta.remove(n-1);
@@ -85,7 +85,7 @@ public class Partita {
         giocatore.getTeam().get(0).setSacchetto(new Sacchetto(pietre));
     }
     public void numeroTama(){
-        double num_golem_giocatore = Math.ceil((Elementi.n_elementi-1)*(Elementi.n_elementi-2)/(2*Sacchetto.DIM_SACCHETTO));
+        double num_golem_giocatore = Math.ceil((Elementi.N_ELEMENTI-1)*(Elementi.N_ELEMENTI-2)/(2*Sacchetto.DIM_SACCHETTO));
         //int num_golem_giocatore = InputData.readIntegerBetween(AnsiColors.PURPLE + "Inserire numero di tamagolem per giocatore: " + AnsiColors.RESET, 1, 20);
         for(int i=0;i<num_golem_giocatore;i++) {
             g1.getTeam().add(new Tamagolem());
@@ -113,7 +113,7 @@ public class Partita {
             else {
                 tempo();
                 //Thread.sleep(MILLIS);
-                System.out.println("Nessun golem ha preso danno!");
+                System.out.println(".\tNessun golem(" + g1.getTeam().get(0).getSacchetto().getPietre().getLast().getElemento().toString() + ") ha preso danno!\n.");
                 draw ++;
                 if(draw==10){
                     if(RandomDraws.estraiBoolean()){
@@ -143,11 +143,12 @@ public class Partita {
 
     public void esito(Giocatore g1, Giocatore g2, int danno){
         tempo();
-        System.out.println("Il golem di tipo " + g1.getTeam().get(0).getSacchetto().getPietre().getFirst().getElemento().toString() + " di " + g1.toString() +  " ha preso " + danno + " di danno da " + g2.getTeam().get(0).getSacchetto().getPietre().getFirst().getElemento().toString());
+        System.out.println(".\tIl golem(" + g1.getTeam().get(0).getSacchetto().getPietre().getLast().getElemento().toString() + ") di " + g1.toString() +  " ha preso " + danno + " di danno(" + g2.getTeam().get(0).getSacchetto().getPietre().getLast().getElemento().toString() + ")\n.");
 
         if(g1.getTeam().get(0).isDead()){
             tempo();
             System.out.println("Il Tamagolem di " +  g1.toString() + " è morto!");
+            System.out.println("Tamagolem rimasti:\n" + g1.toString() + ": " + (g1.getTeam().size()-1) + " ;\n" + g2.toString() + ": " + g2.getTeam().size() + " ;");
         }
 
     }

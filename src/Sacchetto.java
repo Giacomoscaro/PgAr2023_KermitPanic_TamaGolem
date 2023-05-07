@@ -3,7 +3,7 @@ import java.util.ArrayDeque;
 
 public class Sacchetto {
 
-	private static double div = (Elementi.n_elementi+1);
+	private static double div = (Elementi.N_ELEMENTI+1);
 	public static final double DIM_SACCHETTO = Math.ceil(div/3)+1;
 	private ArrayDeque<Pietra> pietre= new ArrayDeque<>();
 	
