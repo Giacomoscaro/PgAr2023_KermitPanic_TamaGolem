@@ -9,7 +9,7 @@ public enum Elementi{
 	TERRA("Terra",0, AnsiColors.GREEN_BRIGHT),ACQUA("Acqua", 1, AnsiColors.BLUE_BRIGHT),FUOCO("Fuoco",2, AnsiColors.RED_BRIGHT),ARIA("Aria", 3, AnsiColors.CYAN_BRIGHT),LUCE("Luce",4,AnsiColors.YELLOW_BRIGHT)
 	,ROMANO("Romanaccio",5,AnsiColors.BLACK), HIGHGROUND("Highground",6,AnsiColors.WHITE_BRIGHT),PLASMA("Plasma",7,AnsiColors.PURPLE_BRIGHT),SABBIA("Sabbia",8,AnsiColors.YELLOW),FUMO("FUMO",9,AnsiColors.GREEN);
 
-	public static final int N_ELEMENTI = InputData.readIntegerBetween(AnsiColors.PURPLE_BRIGHT + "Inserire il numero di elementi da 3 a 10: " + AnsiColors.RESET, 3, 10);//numero di elementi da usare durante il gioco
+	public static final int N_ELEMENTI = InputData.readIntegerBetween(AnsiColors.PURPLE_BRIGHT + "Inserire il numero di elementi da 4 a 10: " + AnsiColors.RESET, 4, 10);//numero di elementi da usare durante il gioco
 	private final int indice;
 	private String nome;
 	private AnsiColors colore;
@@ -121,6 +121,17 @@ public enum Elementi{
 					matrix[i][j]=valore;
 					matrix[j][i]=-valore; //elemento simmetrico
 				}else somma+=matrix[i][j];
+			if(i==N_ELEMENTI-1){
+				boolean max=false;
+				for(int i1=0; i1<N_ELEMENTI;i1++)
+					for(int j1=0; j1<N_ELEMENTI; j1++)
+						if(matrix[i1][j1]==Tamagolem.VITA){
+							max=true;
+						}
+				if(!max){
+					i=-1;
+				}
+			}
 		}
 	}
 

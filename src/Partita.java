@@ -33,11 +33,6 @@ public class Partita {
 
         do{
             scontro(g1.getTeam().get(0), g2.getTeam().get(0));
-            if(g1.getTeam().get(0).isDead() && g2.getTeam().get(0).isDead()){
-                System.out.println("Entrambi i golem si sono esauriti");
-                morteTamagolem(g1);
-                morteTamagolem(g2);
-            }
             if(g1.getTeam().get(0).isDead()) {
                 morteTamagolem(g1);
             }
@@ -94,9 +89,8 @@ public class Partita {
     }
 
     public void scontro(Tamagolem t1, Tamagolem t2){
-        int draw = 0;
+        int turni = 0;
         do{
-
             int potenza = Elementi.interazione(t1.getSacchetto().usaPietra().getElemento(), t2.getSacchetto().usaPietra().getElemento());
             if(potenza<0){
                 t1.danno(Math.abs(potenza));
@@ -114,20 +108,23 @@ public class Partita {
                 tempo();
                 //Thread.sleep(MILLIS);
                 System.out.println(".\tNessun golem(" + g1.getTeam().get(0).getSacchetto().getPietre().getLast().getElemento().toString() + ") ha preso danno!\n.");
-                draw ++;
-                if(draw==10){
-                    if(RandomDraws.estraiBoolean()){
-                        t1.getSacchetto().usaPietra();
-                    }else{
-                        t2.getSacchetto().usaPietra();
-                    }
-                }else if(draw==15){
-                    t1.danno(Tamagolem.VITA);
-                    t2.danno(Tamagolem.VITA);
-                }
             }
             //potenza==0
-
+            turni ++;
+            if(turni==20) {
+                System.out.println(AnsiColors.PURPLE_BRIGHT + "I due golem hanno finito le forze per usare le pietre e stanno cominciando a fare a pugni" + AnsiColors.RESET + "\n.");
+                do{
+                    tempo();
+                    t1.danno(Tamagolem.VITA / 5);
+                    System.out.println(".\tIl golem di " + g1.toString() + " prende " + Tamagolem.VITA/5 + " di danno!\n.");
+                    if(!t1.isDead())
+                    {
+                        tempo();
+                        t2.danno(Tamagolem.VITA / 5);
+                    System.out.println(".\tIl golem di " + g2.toString() + " prende " + Tamagolem.VITA/5 + " di danno!\n.");
+                    }
+                }while(!(t1.isDead() || t2.isDead()));
+            }
         }while(!(t1.isDead() || t2.isDead()));
     }
 
