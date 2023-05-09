@@ -9,7 +9,8 @@ public enum Elementi{
 	TERRA("Terra",0, AnsiColors.GREEN_BRIGHT),ACQUA("Acqua", 1, AnsiColors.BLUE_BRIGHT),FUOCO("Fuoco",2, AnsiColors.RED_BRIGHT),ARIA("Aria", 3, AnsiColors.CYAN_BRIGHT),LUCE("Luce",4,AnsiColors.YELLOW_BRIGHT)
 	,ROMANO("Romanaccio",5,AnsiColors.BLACK), HIGHGROUND("Highground",6,AnsiColors.WHITE_BRIGHT),PLASMA("Plasma",7,AnsiColors.PURPLE_BRIGHT),SABBIA("Sabbia",8,AnsiColors.YELLOW),FUMO("FUMO",9,AnsiColors.GREEN);
 
-	public static final int N_ELEMENTI = InputData.readIntegerBetween(AnsiColors.PURPLE_BRIGHT + "Inserire il numero di elementi da 4 a 10: " + AnsiColors.RESET, 4, 10);//numero di elementi da usare durante il gioco
+	//public static final int p.getN_ele() = //InputData.readIntegerBetween(AnsiColors.PURPLE_BRIGHT + "Inserire il numero di elementi da 4 a 10: " + AnsiColors.RESET, 4, 10);//numero di elementi da usare durante il gioco
+
 	private final int indice;
 	private String nome;
 	private AnsiColors colore;
@@ -63,14 +64,14 @@ public enum Elementi{
      * @return intero >0 se il secondo elemento è quello debole;
      * intero<0 se il primo elemento è quello debole
      */
-    public static int interazione(Elementi e1, Elementi e2) {
-    	return matrix[e1.indice][e2.indice];
+    public static int interazione(Elementi e1, Elementi e2, Partita p) {
+    	return p.getEquiilbrio()[e1.indice][e2.indice];
     }
 
 	//EQUILIBRIO ----------------------------------------
 
 	//creazione della matrice per la creazione dell'equilibrio
-	private static int matrix[][] = new int[N_ELEMENTI][N_ELEMENTI];
+
 
 	//inserire nella matrice matrix[i][i] = 0;
 
@@ -79,7 +80,7 @@ public enum Elementi{
 	 * L'equilibrio ottenuto viene utilizzato per
 	 * i confronti tra Elementi durante tutta la pratita
 	 */
-	public static void creaEquilibrio() {
+	public static void creaEquilibrio(Partita p) {
 		/*
 		 * Genera una matrice adiacenza che rappresenta il grafo delle potenze
 		 * I valori delle potenze sono rappresentati dai valori positivi, i valori
@@ -93,19 +94,19 @@ public enum Elementi{
 		 *  negli elementi dell'ultima colonna/riga la somma degli elementi precedenti nella riga/colonna
 		 *  nelle altre caselle, dei valori casuali	
 		 */
-
+		int matrix[][] = new int[p.getN_ele()][p.getN_ele()];
 		//zeri sulla diagonale
-		for(int i=0; i<N_ELEMENTI; i++)
-			for(int j=0; j<N_ELEMENTI; j++)
+		for(int i=0; i<p.getN_ele(); i++)
+			for(int j=0; j<p.getN_ele(); j++)
 				if(i==j)
 					matrix[i][j]=0;
 
-		for(int i=0; i<N_ELEMENTI; i++) {
+		for(int i=0; i<p.getN_ele(); i++) {
 			int somma=0; //somma da usare per l'ultimo elemento della riga
-			for(int j=0; j<N_ELEMENTI; j++)
+			for(int j=0; j<p.getN_ele(); j++)
 
-				if(j==N_ELEMENTI-1) {
-					if(Math.abs(somma)>=Tamagolem.VITA){
+				if(j==p.getN_ele()-1 && i!=p.getN_ele()-1) {
+					if(Math.abs(somma)>=Tamagolem.VITA || Math.abs(somma)==0){
 						i=-1;
 						break;
 					}
@@ -121,10 +122,10 @@ public enum Elementi{
 					matrix[i][j]=valore;
 					matrix[j][i]=-valore; //elemento simmetrico
 				}else somma+=matrix[i][j];
-			if(i==N_ELEMENTI-1){
+			if(i==p.getN_ele()-1){
 				boolean max=false;
-				for(int i1=0; i1<N_ELEMENTI;i1++)
-					for(int j1=0; j1<N_ELEMENTI; j1++)
+				for(int i1=0; i1<p.getN_ele();i1++)
+					for(int j1=0; j1<p.getN_ele(); j1++)
 						if(matrix[i1][j1]==Tamagolem.VITA){
 							max=true;
 						}
@@ -133,6 +134,7 @@ public enum Elementi{
 				}
 			}
 		}
+		p.setEquiilbrio(matrix);
 	}
 
 	/*
@@ -142,14 +144,21 @@ public enum Elementi{
 	 * Nota: toString non si poteva utilizzare perchè
 	 * definita come funzione non static
 	 */
-	public static String getStringEquilibrio(){
-		StringBuffer tabella= new StringBuffer();
-		for(int i=0; i<N_ELEMENTI; i++){
-			for(int j=0; j<N_ELEMENTI; j++)
-				tabella.append(matrix[i][j] + "\t");
+	public static String getStringEquilibrio( int matrix[][]){
+		StringBuffer output= new StringBuffer();
+		for(int i=0; i<matrix.length; i++){
+			output.append(getElemento(i).toString() + ":\n");
+			for(int j=0; j<matrix.length; j++){
 
-			tabella.append("\n");
+				if(matrix[i][j]>0){
+					output.append(AnsiColors.GREEN_BOLD_BRIGHT + "+" + matrix[i][j] + "\t" +  getElemento(j).toString() + "\n");
+				}else if(matrix[i][j]<0){
+					output.append(AnsiColors.RED_BOLD_BRIGHT  +""+ matrix[i][j] + "\t" +  getElemento(j).toString() + "\n");
+				}
+			}
+
+			output.append("\n");
 		}
-		return tabella.toString();
+		return output.toString();
 	}
 } 

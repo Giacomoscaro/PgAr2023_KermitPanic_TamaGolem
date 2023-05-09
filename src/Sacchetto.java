@@ -3,12 +3,10 @@ import java.util.ArrayDeque;
 
 public class Sacchetto {
 
-	private static double div = (Elementi.N_ELEMENTI+1);
-	public static final double DIM_SACCHETTO = Math.ceil(div/3)+1;
 	private ArrayDeque<Pietra> pietre= new ArrayDeque<>();
 	
-	public Sacchetto(ArrayList<Pietra> pietre) {
-			if(pietre.size()<=DIM_SACCHETTO){
+	public Sacchetto(ArrayList<Pietra> pietre, Partita p1) {
+			if(pietre.size()<=p1.getDim_sacch()){
 				for (Pietra p : pietre) {
 					this.pietre.add(p);
 				}//aggiunge p alla fine della coda

@@ -1,14 +1,19 @@
 import java.util.ArrayList;
 
 import it.kibo.fp.lib.AnsiColors;
+import it.kibo.fp.lib.InputData;
 import it.kibo.fp.lib.RandomDraws;
 
 public class Main {
 
-
     public static void main(String[] args){
-        Partita p3 = new Partita();
-        p3.creaPartita();
+        boolean scelta = true;
 
+        while(scelta) {
+            Partita p3 = new Partita();
+            p3.creaPartita();
+            scelta = InputData.readYesOrNo(AnsiColors.PURPLE_BRIGHT + "Vuoi giocare ancora");
+            System.out.println(AnsiColors.RESET);
+        }
     }
 }
