@@ -12,6 +12,7 @@ public enum AnsiColors {
   /**
    * The ansi code for the <i>black</i> color.
    */
+  GREEN_BOLD_BRIGHT  ("\033[1;92m"), // GREEN
   BLACK("\u001B[30m"),
   /**
    * The ansi code for the <i>red</i> color.

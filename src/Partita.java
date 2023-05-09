@@ -4,6 +4,7 @@ import it.kibo.fp.lib.RandomDraws;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Partita {
 
@@ -14,17 +15,33 @@ public class Partita {
     private Giocatore g2;
     //private HashMap<Elementi, Integer> scorta = new HashMap<>(){}; //S = ⎡(2 * G * P) / N⎤ * N
     private ArrayList<Pietra> scorta = new ArrayList<>();
+    private int n_ele;
+    private int dim_sacch;
+    private int[][] equiilbrio;
     public Partita(){
         this.g1 = new Giocatore(AnsiColors.RED_BOLD_BRIGHT);
         this.g2 = new Giocatore(AnsiColors.BLUE_BOLD_BRIGHT);
 
-        Elementi.creaEquilibrio();
+        this.n_ele = InputData.readIntegerBetween(AnsiColors.PURPLE_BRIGHT + "Inserire numero elementi da 4 a 10: " +AnsiColors.RESET, 4, 10);
+        this.equiilbrio = new int[n_ele][n_ele];
+        this.dim_sacch = (int) Math.ceil((double)(n_ele+1)/3)+1;
+
+        Elementi.creaEquilibrio(this);
         this.numeroTama();
         this.creaScorta();
     }
-    public void creaPartita(){
-        System.out.println(AnsiColors.PURPLE_BRIGHT + "Inizia la partita".toUpperCase() + AnsiColors.RESET);
 
+    public int[][] getEquiilbrio() {
+        return equiilbrio;
+    }
+
+    public void setEquiilbrio(int[][] equiilbrio) {
+        this.equiilbrio = equiilbrio;
+    }
+
+    public void creaPartita(){
+
+        System.out.println(AnsiColors.PURPLE_BRIGHT + "Inizia la partita".toUpperCase() + AnsiColors.RESET);
         g1.setNome(InputData.readNonEmptyString(AnsiColors.PURPLE_BRIGHT + "Inserisci il nome del giocatore 1: " + AnsiColors.RESET, true));
         g2.setNome(InputData.readNonEmptyString(AnsiColors.PURPLE_BRIGHT + "Inserisci il nome del giocatore 2: " + AnsiColors.RESET, true));
 
@@ -48,12 +65,12 @@ public class Partita {
             System.out.println("Il giocatore " +g2.toString() + " ha vinto!");
         }
         System.out.println();
-        System.out.println(Elementi.getStringEquilibrio());
+        System.out.println(Elementi.getStringEquilibrio(getEquiilbrio()));
     }
     public void creaScorta(){
-        double s = (Math.ceil(((2*g1.getTeam().size()*Sacchetto.DIM_SACCHETTO)/Elementi.N_ELEMENTI)))*Elementi.N_ELEMENTI;
-        for(int i=0;i<Elementi.N_ELEMENTI;i++){
-            for(int j=0;j<(s/Elementi.N_ELEMENTI);j++){
+        double s = Math.ceil(((double)2*g1.getTeam().size()*dim_sacch/n_ele))*n_ele;
+        for(int i=0;i<n_ele;i++){
+            for(int j=0;j<(s/n_ele);j++){
                 scorta.add(new Pietra(Elementi.getElemento(i)));
             }
         }
@@ -67,8 +84,8 @@ public class Partita {
     public void creaSet(Giocatore giocatore) {
         ArrayList<Pietra> pietre = new ArrayList<>();
         //Thread.sleep(MILLIS);
-        System.out.println(AnsiColors.GREEN + "Selezione " + (int)Sacchetto.DIM_SACCHETTO + " Pietre dalla scorta per creare il set" + AnsiColors.RESET);
-        for(int i = 0; i<Sacchetto.DIM_SACCHETTO;i++){
+        System.out.println(AnsiColors.GREEN + "Selezione " + (int)dim_sacch + " Pietre dalla scorta per creare il set" + AnsiColors.RESET);
+        for(int i = 0; i<dim_sacch;i++){
             stampaScorta();
             int n = InputData.readInteger( giocatore.toString() + " che pietra vuoi: ");
             while(n<1 || n> scorta.size()){
@@ -77,10 +94,10 @@ public class Partita {
             pietre.add(scorta.get(n-1));
             scorta.remove(n-1);
         }
-        giocatore.getTeam().get(0).setSacchetto(new Sacchetto(pietre));
+        giocatore.getTeam().get(0).setSacchetto(new Sacchetto(pietre, this));
     }
     public void numeroTama(){
-        double num_golem_giocatore = Math.ceil((Elementi.N_ELEMENTI-1)*(Elementi.N_ELEMENTI-2)/(2*Sacchetto.DIM_SACCHETTO));
+        double num_golem_giocatore = Math.ceil((n_ele-1)*(n_ele-2)/(2*dim_sacch));
         //int num_golem_giocatore = InputData.readIntegerBetween(AnsiColors.PURPLE + "Inserire numero di tamagolem per giocatore: " + AnsiColors.RESET, 1, 20);
         for(int i=0;i<num_golem_giocatore;i++) {
             g1.getTeam().add(new Tamagolem());
@@ -91,7 +108,7 @@ public class Partita {
     public void scontro(Tamagolem t1, Tamagolem t2){
         int turni = 0;
         do{
-            int potenza = Elementi.interazione(t1.getSacchetto().usaPietra().getElemento(), t2.getSacchetto().usaPietra().getElemento());
+            int potenza = Elementi.interazione(t1.getSacchetto().usaPietra().getElemento(), t2.getSacchetto().usaPietra().getElemento(),this);
             if(potenza<0){
                 t1.danno(Math.abs(potenza));
                 tempo();
@@ -115,15 +132,25 @@ public class Partita {
                 System.out.println(AnsiColors.PURPLE_BRIGHT + "I due golem hanno finito le forze per usare le pietre e stanno cominciando a fare a pugni" + AnsiColors.RESET + "\n.");
                 do{
                     tempo();
-                    t1.danno(Tamagolem.VITA / 5);
-                    System.out.println(".\tIl golem di " + g1.toString() + " prende " + Tamagolem.VITA/5 + " di danno!\n.");
+                    int danno1= RandomDraws.drawInteger(0, Tamagolem.VITA/5);
+                    t1.danno(danno1);
+                    System.out.println(".\tIl golem di " + g1.toString() + " prende " + danno1 + " di danno!\n.");
                     if(!t1.isDead())
                     {
                         tempo();
-                        t2.danno(Tamagolem.VITA / 5);
-                    System.out.println(".\tIl golem di " + g2.toString() + " prende " + Tamagolem.VITA/5 + " di danno!\n.");
+                        int danno2= RandomDraws.drawInteger(0, Tamagolem.VITA/5);
+                        t2.danno(danno2);
+                    System.out.println(".\tIl golem di " + g2.toString() + " prende " + danno2 + " di danno!\n.");
                     }
                 }while(!(t1.isDead() || t2.isDead()));
+                if (t1.isDead()){
+                    System.out.println("Il tamagolem di "+ g1.toString() + " é andato KO");
+                    System.out.println("Tamagolem rimasti:\n" + g1.toString() + ": " + (g1.getTeam().size()-1) + " ;\n" + g2.toString() + ": " + g2.getTeam().size() + " ;");
+                } else if (t2.isDead()) {
+                    System.out.println("Il tamagolem di "+ g2.toString() + " é andato KO");
+                    System.out.println("Tamagolem rimasti:\n" + g2.toString() + ": " + (g2.getTeam().size()-1) + " ;\n" + g1.toString() + ": " + g1.getTeam().size() + " ;");
+                }
+
             }
         }while(!(t1.isDead() || t2.isDead()));
     }
@@ -155,5 +182,13 @@ public class Partita {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getN_ele() {
+        return n_ele;
+    }
+
+    public int getDim_sacch() {
+        return dim_sacch;
     }
 }
