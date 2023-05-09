@@ -4,9 +4,9 @@ import it.kibo.fp.lib.AnsiColors;
 public class Giocatore {
 
     //conterra un arraylist di golem e il relativo sacchetto
-    private ArrayList<Tamagolem> team = new ArrayList<>();
+    private final ArrayList<Tamagolem> team = new ArrayList<>();
     private String nome;
-    private AnsiColors colore;
+    private final AnsiColors colore;
 
     public Giocatore(AnsiColors colore){
         this.colore=colore;
@@ -16,13 +16,6 @@ public class Giocatore {
     }
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-    public AnsiColors getColore() {
-        return colore;
     }
     public String toString(){
         return colore +  this.nome.toUpperCase() + AnsiColors.RESET;

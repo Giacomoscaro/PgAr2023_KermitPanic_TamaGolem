@@ -1,5 +1,5 @@
 public class Pietra {
-	private Elementi elemento;
+	private final Elementi elemento;
 	
 	public Pietra(Elementi elemento) {
 		this.elemento = elemento;

@@ -1,8 +1,5 @@
-import java.util.ArrayList;
-
 import it.kibo.fp.lib.AnsiColors;
 import it.kibo.fp.lib.InputData;
-import it.kibo.fp.lib.RandomDraws;
 
 public class Main {
 

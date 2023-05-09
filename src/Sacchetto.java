@@ -3,7 +3,7 @@ import java.util.ArrayDeque;
 
 public class Sacchetto {
 
-	private ArrayDeque<Pietra> pietre= new ArrayDeque<>();
+	private final ArrayDeque<Pietra> pietre= new ArrayDeque<>();
 	
 	public Sacchetto(ArrayList<Pietra> pietre, Partita p1) {
 			if(pietre.size()<=p1.getDim_sacch()){

@@ -1,10 +1,6 @@
-import it.kibo.fp.lib.InputData;
-
-import java.util.ArrayList;
-
 public class Tamagolem {
     public static final int VITA = 10;
-    private int vita_golem = VITA;
+    private int vita_golem;
     private Sacchetto sacchetto;
     public Tamagolem(){
         this.vita_golem = VITA;

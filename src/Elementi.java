@@ -1,6 +1,5 @@
-import it.kibo.fp.lib.InputData;
-import it.kibo.fp.lib.RandomDraws;
 import it.kibo.fp.lib.AnsiColors;
+import it.kibo.fp.lib.RandomDraws;
 
     
 public enum Elementi{
@@ -12,8 +11,8 @@ public enum Elementi{
 	//public static final int p.getN_ele() = //InputData.readIntegerBetween(AnsiColors.PURPLE_BRIGHT + "Inserire il numero di elementi da 4 a 10: " + AnsiColors.RESET, 4, 10);//numero di elementi da usare durante il gioco
 
 	private final int indice;
-	private String nome;
-	private AnsiColors colore;
+	private final String nome;
+	private final AnsiColors colore;
 
 	Elementi(String nome, int indice, AnsiColors colore){
 		this.nome = nome;
@@ -21,37 +20,43 @@ public enum Elementi{
 		this.colore = colore;
 	}
 	public static Elementi getElemento(int i){
-		switch (i){
-			case 0:{ return TERRA;
+		switch (i) {
+			case 0 -> {
+				return TERRA;
 			}
-			case 1:{ return ACQUA;
+			case 1 -> {
+				return ACQUA;
 			}
-			case 2:{ return FUOCO;
+			case 2 -> {
+				return FUOCO;
 			}
-			case 3:{ return ARIA;
+			case 3 -> {
+				return ARIA;
 			}
-			case 4:{ return LUCE;
+			case 4 -> {
+				return LUCE;
 			}
-			case 5:{ return ROMANO;
+			case 5 -> {
+				return ROMANO;
 			}
-			case 6:{ return HIGHGROUND;
+			case 6 -> {
+				return HIGHGROUND;
 			}
-			case 7:{ return PLASMA;
+			case 7 -> {
+				return PLASMA;
 			}
-			case 8:{ return SABBIA;
+			case 8 -> {
+				return SABBIA;
 			}
-			case 9:{ return FUMO;
+			case 9 -> {
+				return FUMO;
 			}
-			default:{ return null;
+			default -> {
+				return null;
 			}
 		}
 
 	}
-
-	public int getIndice(){
-		return this.indice;
-	}
-
 	public String toString() {
 		return colore + this.nome + AnsiColors.RESET;
 	}
@@ -94,7 +99,7 @@ public enum Elementi{
 		 *  negli elementi dell'ultima colonna/riga la somma degli elementi precedenti nella riga/colonna
 		 *  nelle altre caselle, dei valori casuali	
 		 */
-		int matrix[][] = new int[p.getN_ele()][p.getN_ele()];
+		int[][] matrix = new int[p.getN_ele()][p.getN_ele()];
 		//zeri sulla diagonale
 		for(int i=0; i<p.getN_ele(); i++)
 			for(int j=0; j<p.getN_ele(); j++)
@@ -128,6 +133,7 @@ public enum Elementi{
 					for(int j1=0; j1<p.getN_ele(); j1++)
 						if(matrix[i1][j1]==Tamagolem.VITA){
 							max=true;
+							break;
 						}
 				if(!max){
 					i=-1;
@@ -144,7 +150,7 @@ public enum Elementi{
 	 * Nota: toString non si poteva utilizzare perchè
 	 * definita come funzione non static
 	 */
-	public static String getStringEquilibrio( int matrix[][]){
+	public static String getStringEquilibrio(int[][] matrix){
 		StringBuffer output= new StringBuffer();
 		for(int i=0; i<matrix.length; i++){
 			output.append(getElemento(i).toString() + ":\n");

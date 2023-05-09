@@ -1,22 +1,16 @@
-import it.kibo.fp.lib.InputData;
 import it.kibo.fp.lib.AnsiColors;
+import it.kibo.fp.lib.InputData;
 import it.kibo.fp.lib.RandomDraws;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 
 public class Partita {
-
-
-    public static final int MILLIS = 1000;
-    public static final int MILLIS2 = 50;
-    private Giocatore g1;
-    private Giocatore g2;
+    private final Giocatore g1;
+    private final Giocatore g2;
     //private HashMap<Elementi, Integer> scorta = new HashMap<>(){}; //S = ⎡(2 * G * P) / N⎤ * N
-    private ArrayList<Pietra> scorta = new ArrayList<>();
-    private int n_ele;
-    private int dim_sacch;
+    private final ArrayList<Pietra> scorta = new ArrayList<>();
+    private final int n_ele;
+    private final int dim_sacch;
     private int[][] equiilbrio;
     public Partita(){
         this.g1 = new Giocatore(AnsiColors.RED_BOLD_BRIGHT);
@@ -59,10 +53,10 @@ public class Partita {
 
         }while(g1.getTeam().size()>0 && g2.getTeam().size()>0);
         if(g1.getTeam().size()>0){
-            System.out.println("Il giocatore " + g1.toString() + " ha vinto!");
+            System.out.println("Il giocatore " + g1 + " ha vinto!");
         }
         else {
-            System.out.println("Il giocatore " +g2.toString() + " ha vinto!");
+            System.out.println("Il giocatore " + g2 + " ha vinto!");
         }
         System.out.println();
         System.out.println(Elementi.getStringEquilibrio(getEquiilbrio()));
@@ -84,7 +78,7 @@ public class Partita {
     public void creaSet(Giocatore giocatore) {
         ArrayList<Pietra> pietre = new ArrayList<>();
         //Thread.sleep(MILLIS);
-        System.out.println(AnsiColors.GREEN + "Selezione " + (int)dim_sacch + " Pietre dalla scorta per creare il set" + AnsiColors.RESET);
+        System.out.println(AnsiColors.GREEN + "Selezione " + dim_sacch + " Pietre dalla scorta per creare il set" + AnsiColors.RESET);
         for(int i = 0; i<dim_sacch;i++){
             stampaScorta();
             int n = InputData.readInteger( giocatore.toString() + " che pietra vuoi: ");
@@ -97,7 +91,7 @@ public class Partita {
         giocatore.getTeam().get(0).setSacchetto(new Sacchetto(pietre, this));
     }
     public void numeroTama(){
-        double num_golem_giocatore = Math.ceil((n_ele-1)*(n_ele-2)/(2*dim_sacch));
+        int num_golem_giocatore = (int)Math.ceil(((double)n_ele-1)*(n_ele-2)/(2*dim_sacch));
         //int num_golem_giocatore = InputData.readIntegerBetween(AnsiColors.PURPLE + "Inserire numero di tamagolem per giocatore: " + AnsiColors.RESET, 1, 20);
         for(int i=0;i<num_golem_giocatore;i++) {
             g1.getTeam().add(new Tamagolem());
@@ -128,13 +122,13 @@ public class Partita {
             }
             //potenza==0
             turni ++;
-            if(turni==20) {
+            if(turni==15) {
                 System.out.println(AnsiColors.PURPLE_BRIGHT + "I due golem hanno finito le forze per usare le pietre e stanno cominciando a fare a pugni" + AnsiColors.RESET + "\n.");
                 do{
                     tempo();
                     int danno1= RandomDraws.drawInteger(0, Tamagolem.VITA/5);
                     t1.danno(danno1);
-                    System.out.println(".\tIl golem di " + g1.toString() + " prende " + danno1 + " di danno!\n.");
+                    System.out.println(".\tIl golem di " + g1 + " prende " + danno1 + " di danno!\n.");
                     if(!t1.isDead())
                     {
                         tempo();
@@ -144,11 +138,11 @@ public class Partita {
                     }
                 }while(!(t1.isDead() || t2.isDead()));
                 if (t1.isDead()){
-                    System.out.println("Il tamagolem di "+ g1.toString() + " é andato KO");
-                    System.out.println("Tamagolem rimasti:\n" + g1.toString() + ": " + (g1.getTeam().size()-1) + " ;\n" + g2.toString() + ": " + g2.getTeam().size() + " ;");
+                    System.out.println("Il tamagolem di "+ g1 + " é andato KO");
+                    System.out.println("Tamagolem rimasti:\n" + g1 + ": " + (g1.getTeam().size()-1) + " ;\n" + g2.toString() + ": " + g2.getTeam().size() + " ;");
                 } else if (t2.isDead()) {
                     System.out.println("Il tamagolem di "+ g2.toString() + " é andato KO");
-                    System.out.println("Tamagolem rimasti:\n" + g2.toString() + ": " + (g2.getTeam().size()-1) + " ;\n" + g1.toString() + ": " + g1.getTeam().size() + " ;");
+                    System.out.println("Tamagolem rimasti:\n" + g2 + ": " + (g2.getTeam().size()-1) + " ;\n" + g1 + ": " + g1.getTeam().size() + " ;");
                 }
 
             }
@@ -161,18 +155,18 @@ public class Partita {
             creaSet(giocatore);
         }
         else {
-            System.out.println("Il giocatore " +giocatore.toString() + " ha finito i Tamagolem");
+            System.out.println("Il giocatore " + giocatore + " ha finito i Tamagolem");
         }
     }
 
     public void esito(Giocatore g1, Giocatore g2, int danno){
         tempo();
-        System.out.println(".\tIl golem(" + g1.getTeam().get(0).getSacchetto().getPietre().getLast().getElemento().toString() + ") di " + g1.toString() +  " ha preso " + danno + " di danno(" + g2.getTeam().get(0).getSacchetto().getPietre().getLast().getElemento().toString() + ")\n.");
+        System.out.println(".\tIl golem(" + g1.getTeam().get(0).getSacchetto().getPietre().getLast().getElemento().toString() + ") di " + g1 +  " ha preso " + danno + " di danno(" + g2.getTeam().get(0).getSacchetto().getPietre().getLast().getElemento().toString() + ")\n.");
 
         if(g1.getTeam().get(0).isDead()){
             tempo();
-            System.out.println("Il Tamagolem di " +  g1.toString() + " è morto!");
-            System.out.println("Tamagolem rimasti:\n" + g1.toString() + ": " + (g1.getTeam().size()-1) + " ;\n" + g2.toString() + ": " + g2.getTeam().size() + " ;");
+            System.out.println("Il Tamagolem di " + g1 + " è morto!");
+            System.out.println("Tamagolem rimasti:\n" + g1 + ": " + (g1.getTeam().size()-1) + " ;\n" + g2 + ": " + g2.getTeam().size() + " ;");
         }
 
     }
