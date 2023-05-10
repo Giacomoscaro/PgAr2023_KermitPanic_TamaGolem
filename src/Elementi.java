@@ -76,7 +76,7 @@ public enum Elementi{
      * intero<0 se il primo elemento è quello debole
      */
     public static int interazione(Elementi e1, Elementi e2, Partita p) {
-    	return p.getEquiilbrio()[e1.indice][e2.indice];
+    	return p.getEquilibrio()[e1.indice][e2.indice];
     }
 
 	//EQUILIBRIO ----------------------------------------

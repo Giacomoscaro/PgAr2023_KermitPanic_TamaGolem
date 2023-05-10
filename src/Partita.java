@@ -33,7 +33,7 @@ public class Partita {
         this.creaScorta();
     }
 
-    public int[][] getEquiilbrio() {
+    public int[][] getEquilibrio() {
         return equilibrio;
     }
 
@@ -71,7 +71,7 @@ public class Partita {
         }
         System.out.println();
         tempo();
-        System.out.println(Elementi.getStringEquilibrio(getEquiilbrio())); //stampa l'equilibrio
+        System.out.println(Elementi.getStringEquilibrio(getEquilibrio())); //stampa l'equilibrio
     }
     
     /**
