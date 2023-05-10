@@ -13,7 +13,7 @@ public class Partita {
     
     private int n_ele;
     private int dim_sacch;
-    private int[][] equiilbrio; //matrice dell'equilibrio
+    private int[][] equilibrio; //matrice dell'equilibrio
     
     /**
      *  Prepara il necessario per svolgere la partita:
@@ -25,7 +25,7 @@ public class Partita {
         this.g2 = new Giocatore(AnsiColors.BLUE_BOLD_BRIGHT);
 
         this.n_ele = InputData.readIntegerBetween(AnsiColors.PURPLE_BRIGHT + "Inserire numero elementi da 4 a 10: " +AnsiColors.RESET, 4, 10);
-        this.equiilbrio = new int[n_ele][n_ele];
+        this.equilibrio = new int[n_ele][n_ele];
         this.dim_sacch = (int) Math.ceil((double)(n_ele+1)/3)+1;
 
         Elementi.creaEquilibrio(this);
@@ -34,11 +34,11 @@ public class Partita {
     }
 
     public int[][] getEquiilbrio() {
-        return equiilbrio;
+        return equilibrio;
     }
 
     public void setEquiilbrio(int[][] equiilbrio) {
-        this.equiilbrio = equiilbrio;
+        this.equilibrio = equiilbrio;
     }
     /**
      * Esegue la partita
@@ -70,6 +70,7 @@ public class Partita {
             System.out.println("Il giocatore " + g2 + " ha vinto!");
         }
         System.out.println();
+        tempo();
         System.out.println(Elementi.getStringEquilibrio(getEquiilbrio())); //stampa l'equilibrio
     }
     
