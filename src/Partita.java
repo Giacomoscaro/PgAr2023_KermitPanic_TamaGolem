@@ -5,13 +5,21 @@ import it.kibo.fp.lib.RandomDraws;
 import java.util.ArrayList;
 
 public class Partita {
-    private final Giocatore g1;
-    private final Giocatore g2;
-    //private HashMap<Elementi, Integer> scorta = new HashMap<>(){}; //S = ⎡(2 * G * P) / N⎤ * N
-    private final ArrayList<Pietra> scorta = new ArrayList<>();
-    private final int n_ele;
-    private final int dim_sacch;
-    private int[][] equiilbrio;
+
+    private Giocatore g1;
+    private Giocatore g2;
+    
+    private ArrayList<Pietra> scorta = new ArrayList<>(); //pietre della scorta comune
+    
+    private int n_ele;
+    private int dim_sacch;
+    private int[][] equiilbrio; //matrice dell'equilibrio
+    
+    /**
+     *  Prepara il necessario per svolgere la partita:
+     *   - definizione del numero di elementi da usare, della quantità di pietre usate dai tamagolem, del numero di tamagolem
+     *   - creazione dell'equilibrio e della scorta   
+     */
     public Partita(){
         this.g1 = new Giocatore(AnsiColors.RED_BOLD_BRIGHT);
         this.g2 = new Giocatore(AnsiColors.BLUE_BOLD_BRIGHT);
@@ -32,19 +40,22 @@ public class Partita {
     public void setEquiilbrio(int[][] equiilbrio) {
         this.equiilbrio = equiilbrio;
     }
-
+    /**
+     * Esegue la partita
+     */
     public void creaPartita(){
 
         System.out.println(AnsiColors.PURPLE_BRIGHT + "Inizia la partita".toUpperCase() + AnsiColors.RESET);
         g1.setNome(InputData.readNonEmptyString(AnsiColors.PURPLE_BRIGHT + "Inserisci il nome del giocatore 1: " + AnsiColors.RESET, true));
         g2.setNome(InputData.readNonEmptyString(AnsiColors.PURPLE_BRIGHT + "Inserisci il nome del giocatore 2: " + AnsiColors.RESET, true));
 
+        //inizializza i primi set di pietre per i tamagolem
         creaSet(g1);
         creaSet(g2);
 
         do{
             scontro(g1.getTeam().get(0), g2.getTeam().get(0));
-            if(g1.getTeam().get(0).isDead()) {
+            if(g1.getTeam().get(0).isDead()) { //controlla di chi è il tamagolem morto
                 morteTamagolem(g1);
             }
             else{
@@ -59,8 +70,12 @@ public class Partita {
             System.out.println("Il giocatore " + g2 + " ha vinto!");
         }
         System.out.println();
-        System.out.println(Elementi.getStringEquilibrio(getEquiilbrio()));
+        System.out.println(Elementi.getStringEquilibrio(getEquiilbrio())); //stampa l'equilibrio
     }
+    
+    /**
+     *  Crea la scorta di pietre condivisa tra i due giocatori
+     */
     public void creaScorta(){
         double s = Math.ceil(((double)2*g1.getTeam().size()*dim_sacch/n_ele))*n_ele;
         for(int i=0;i<n_ele;i++){
@@ -69,12 +84,21 @@ public class Partita {
             }
         }
     }
+    
+    /**
+     * Stampa l'elenco delle pietre dentro la scorta
+     */
     public void stampaScorta(){
         for(Pietra p : scorta){
             //Thread.sleep(MILLIS2);
             System.out.println(scorta.indexOf(p)+1  + "\t" + p.getElemento().toString());
         }
     }
+    
+    /**
+     * Costruisce un set di pietre per il tamagolem corrente
+     * @param giocatore il giocatore che deve scegliere le pietre
+     */
     public void creaSet(Giocatore giocatore) {
         ArrayList<Pietra> pietre = new ArrayList<>();
         //Thread.sleep(MILLIS);
@@ -90,6 +114,10 @@ public class Partita {
         }
         giocatore.getTeam().get(0).setSacchetto(new Sacchetto(pietre, this));
     }
+    
+    /*
+     * Inizializza i tamagolem dei due giocatori
+     */
     public void numeroTama(){
         int num_golem_giocatore = (int)Math.ceil(((double)n_ele-1)*(n_ele-2)/(2*dim_sacch));
         //int num_golem_giocatore = InputData.readIntegerBetween(AnsiColors.PURPLE + "Inserire numero di tamagolem per giocatore: " + AnsiColors.RESET, 1, 20);
@@ -99,6 +127,11 @@ public class Partita {
         }
     }
 
+    /**
+     * Gestisce lo scontro tra due tamagolem
+     * @param t1 il tamagolem corrente del giocatore 1
+     * @param t2 il tamagolem corrente del giocatore 2
+     */
     public void scontro(Tamagolem t1, Tamagolem t2){
         int turni = 0;
         do{
@@ -115,13 +148,17 @@ public class Partita {
                     //Thread.sleep(MILLIS);
                     esito(g2, g1, Math.abs(potenza));
             }
-            else {
+            else { //potenza==0
                 tempo();
                 //Thread.sleep(MILLIS);
                 System.out.println(".\tNessun golem(" + g1.getTeam().get(0).getSacchetto().getPietre().getLast().getElemento().toString() + ") ha preso danno!\n.");
             }
-            //potenza==0
             turni ++;
+            /*
+             * Per evitare che i tamagolem combattano all'infinito, dopo molti turni in pareggio,
+             * si smette di usare il combattimento con le pietre.
+             * I tamagolem infliggono danni limitati (anche 0) fino a quando uno dei due non viene sconfitto
+             */
             if(turni==15) {
                 System.out.println(AnsiColors.PURPLE_BRIGHT + "I due golem hanno finito le forze per usare le pietre e stanno cominciando a fare a pugni" + AnsiColors.RESET + "\n.");
                 do{
@@ -149,6 +186,10 @@ public class Partita {
         }while(!(t1.isDead() || t2.isDead()));
     }
 
+    /**
+     * Esegue alcune azioni da fare dopo la morte di un tamagolem
+     * @param giocatore il giocatore a cui è morto il tamagolem
+     */
     public void morteTamagolem(Giocatore giocatore){
         giocatore.getTeam().remove(0);
         if(giocatore.getTeam().size()>0){
@@ -159,6 +200,12 @@ public class Partita {
         }
     }
 
+    /**
+     * Visualizza gli elementi delle pietre usate dai tamagolem e 
+     * @param g1 il giocatore con il tamagolem che ha subito danno
+     * @param g2 l'altro giocatore
+     * @param danno danno inflitto nell'ultimo turno
+     */
     public void esito(Giocatore g1, Giocatore g2, int danno){
         tempo();
         System.out.println(".\tIl golem(" + g1.getTeam().get(0).getSacchetto().getPietre().getLast().getElemento().toString() + ") di " + g1 +  " ha preso " + danno + " di danno(" + g2.getTeam().get(0).getSacchetto().getPietre().getLast().getElemento().toString() + ")\n.");
@@ -170,6 +217,8 @@ public class Partita {
         }
 
     }
+    
+    //ferma l'esecuzione per 1s
     public void tempo(){
         try {
             Thread.sleep(1000);  // 1000 milliseconds = 1 second

@@ -8,8 +8,8 @@ public class Sacchetto {
 	public Sacchetto(ArrayList<Pietra> pietre, Partita p1) {
 			if(pietre.size()<=p1.getDim_sacch()){
 				for (Pietra p : pietre) {
-					this.pietre.add(p);
-				}//aggiunge p alla fine della coda
+					this.pietre.add(p); //aggiunge p alla fine della coda
+				}
 			}
 	}
 	

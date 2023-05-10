@@ -8,12 +8,14 @@ public enum Elementi{
 	TERRA("Terra",0, AnsiColors.GREEN_BRIGHT),ACQUA("Acqua", 1, AnsiColors.BLUE_BRIGHT),FUOCO("Fuoco",2, AnsiColors.RED_BRIGHT),ARIA("Aria", 3, AnsiColors.CYAN_BRIGHT),LUCE("Luce",4,AnsiColors.YELLOW_BRIGHT)
 	,ROMANO("Romanaccio",5,AnsiColors.BLACK), HIGHGROUND("Highground",6,AnsiColors.WHITE_BRIGHT),PLASMA("Plasma",7,AnsiColors.PURPLE_BRIGHT),SABBIA("Sabbia",8,AnsiColors.YELLOW),FUMO("FUMO",9,AnsiColors.GREEN);
 
-	//public static final int p.getN_ele() = //InputData.readIntegerBetween(AnsiColors.PURPLE_BRIGHT + "Inserire il numero di elementi da 4 a 10: " + AnsiColors.RESET, 4, 10);//numero di elementi da usare durante il gioco
 
 	private final int indice;
 	private final String nome;
 	private final AnsiColors colore;
 
+	/*
+	 * Costruttore di Elementi che specifica nome, indice
+	 */
 	Elementi(String nome, int indice, AnsiColors colore){
 		this.nome = nome;
 		this.indice = indice;
@@ -57,6 +59,10 @@ public enum Elementi{
 		}
 
 	}
+
+	/**
+	 * Restituisce una stringa formattata con il colore dell'elemento
+	 */
 	public String toString() {
 		return colore + this.nome + AnsiColors.RESET;
 	}
@@ -75,10 +81,7 @@ public enum Elementi{
 
 	//EQUILIBRIO ----------------------------------------
 
-	//creazione della matrice per la creazione dell'equilibrio
-
-
-	//inserire nella matrice matrix[i][i] = 0;
+	//creazione della matrice dell'equilibrio degli elementi
 
 	/**
 	 * Crea l'equilibrio dell'Universo
@@ -94,10 +97,11 @@ public enum Elementi{
 		 *    Fuoco -----> Acqua    -5
 		 *    
 		 * Per ottenere un grafo corretto, la matrice di adiacenza ha:
-		 * 	sulla diagonale tutti zeri
-		 *  è simmetrica
-		 *  negli elementi dell'ultima colonna/riga la somma degli elementi precedenti nella riga/colonna
-		 *  nelle altre caselle, dei valori casuali	
+		 *  - sulla diagonale tutti zeri
+		 *  - è simmetrica
+		 *  - il valore assoluto dei valori (non sulla diagonale) è 1 < x < Tamagolem.VITA
+		 *  - negli elementi dell'ultima colonna/riga la somma degli elementi precedenti nella riga/colonna
+		 *    nelle altre caselle, dei valori casuali
 		 */
 		int[][] matrix = new int[p.getN_ele()][p.getN_ele()];
 		//zeri sulla diagonale
@@ -107,26 +111,36 @@ public enum Elementi{
 					matrix[i][j]=0;
 
 		for(int i=0; i<p.getN_ele(); i++) {
-			int somma=0; //somma da usare per l'ultimo elemento della riga
+			int somma=0; //somma da calcolare per l'ultimo elemento della riga
 			for(int j=0; j<p.getN_ele(); j++)
 
+				//ultimi elementi delle righe (escluso quello dell'ultima riga)
 				if(j==p.getN_ele()-1 && i!=p.getN_ele()-1) {
+					/* se il valore da inserire supera la vita del tamagolem oppure è 0
+					*  ripeti la generazione della riga corrente
+					*/
 					if(Math.abs(somma)>=Tamagolem.VITA || Math.abs(somma)==0){
-						i=-1;
-						break;
+						i=-1; //riporta l'indice alla riga precedente (il ciclo la riporta dopo a quella attuale)
+						break; //esci dal ciclo della riga
 					}
 					matrix[i][j]=-somma;
 					matrix[j][i]=somma; //elemento simmetrico
-				}else if(j>i) {
+				}else if(j>i) {// elementi sopra la diagonale
+					
+					// Genera un valore tra -Tamagolem.VITA e Tamagolem.VITA (0 escluso)
 					int valore=RandomDraws.drawInteger(1,Tamagolem.VITA);
 					if(RandomDraws.estraiBoolean())
 						valore= - valore;
 
-					somma+=valore;
+					somma+=valore; //aggiorna il valore della somma degli elementi della riga
 
 					matrix[i][j]=valore;
 					matrix[j][i]=-valore; //elemento simmetrico
-				}else somma+=matrix[i][j];
+				}else somma+=matrix[i][j]; //elementi sotto la diagonale (si aggiorna solo la somma della riga)
+			/*
+			 * controlla se la tabella ha almeno una volta un valore massimo (valore=Tamagolem.vita)
+			 * Se non lo trova ripete la generazione della tabella
+			*/
 			if(i==p.getN_ele()-1){
 				boolean max=false;
 				for(int i1=0; i1<p.getN_ele();i1++)
@@ -140,11 +154,13 @@ public enum Elementi{
 				}
 			}
 		}
-		p.setEquiilbrio(matrix);
+		p.setEquiilbrio(matrix); //imposta la matrice equilibrio per la partita indicata in input
 	}
 
 	/*
-	 * Ritorna una stringa che rappresenta l'equilibrio
+	 * Ritorna una stringa formattata che rappresenta l'equilibrio
+	 * Per ogni elemento sono visualizzati i valori delle iterazioni
+	 * con gli altri elementi
 	 */
 	/*
 	 * Nota: toString non si poteva utilizzare perchè
@@ -156,6 +172,7 @@ public enum Elementi{
 			output.append(getElemento(i).toString() + ":\n");
 			for(int j=0; j<matrix.length; j++){
 
+				//recupera dall'equilibrio solo i valori positivi e negativi delle interazioni tra elementi
 				if(matrix[i][j]>0){
 					output.append(AnsiColors.GREEN_BOLD_BRIGHT + "+" + matrix[i][j] + "\t" +  getElemento(j).toString() + "\n");
 				}else if(matrix[i][j]<0){
